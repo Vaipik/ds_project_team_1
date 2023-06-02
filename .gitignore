@@ -132,3 +132,5 @@ dmypy.json
 .postgres_data/
 .app/
 fly.toml
+*.h5
+
