@@ -16,9 +16,8 @@ class ObjectCategories(str, Enum):
     truck = "truck"
 
 
-class FileIsNotImageSchema(BaseModel):
-    message: str
-
-
 class ImageResponse(BaseModel):
-    class_: ObjectCategories = Field(alias="imageClass")
+    label: str = Field(alias="imageClass")
+
+    class Config:
+        allow_population_by_field_name = True

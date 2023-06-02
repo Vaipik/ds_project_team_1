@@ -9,5 +9,6 @@ class BaseImageException(Exception):
 @dataclass
 class FileIsNotImage(BaseImageException):
     filename: str
+
     def message(self):
         return f"{self.filename} is not valid image"

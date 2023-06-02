@@ -1,36 +1,35 @@
 from typing import Annotated
 
 from fastapi import APIRouter, UploadFile, File, status
+import tensorflow as tf
 
 from src.application.exceptions.images import FileIsNotImage
-from src.schemas.images import FileIsNotImageSchema, ImageResponse
-from src.services.images import check_is_file_image
-
+from src.schemas.images import ImageResponse
+from src.services.images import check_is_file_image, predict_object
 
 images_router = APIRouter(
     prefix="/images",
     tags=["Images recognition"]
 )
 
-model = tf.keras.models.load_model("")  # TODO: How to remove global ?
+model = tf.keras.models.load_model("efficientnetb1-cifar.h5")  # TODO: How to remove global ?
 
 
 @images_router.post(
     "/",
-    status_code=status.HTTP_201_CREATED,
+    status_code=status.HTTP_200_OK,
     responses={
         status.HTTP_400_BAD_REQUEST: {
-            "description": {
-                "message": "Uploaded file is not image"
-            }
+            "description": "Uploaded file is not image"
         }
     },
-    response_model=ImageResponse
+    response_model=ImageResponse,
 )
-def predict_image(file: Annotated[UploadFile, File()]):
+async def predict_image(file: Annotated[UploadFile, File()]):
     file_is_image = check_is_file_image(file.content_type)
     if not file_is_image:
         raise FileIsNotImage(file.filename)
+    file_content = await file.read()
+    predicted_label = predict_object(model, file_content)
 
-    predict_object
-    return file
+    return ImageResponse(label=predicted_label)
