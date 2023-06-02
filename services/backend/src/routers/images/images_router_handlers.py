@@ -7,12 +7,13 @@ from src.application.exceptions.images import FileIsNotImage
 from src.schemas.images import ImageResponse
 from src.services.images import check_is_file_image, predict_object
 
+
 images_router = APIRouter(
     prefix="/images",
     tags=["Images recognition"]
 )
 
-model = tf.keras.models.load_model("efficientnetb1-cifar.h5")  # TODO: How to remove global ?
+model = tf.keras.models.load_model("/app/model/efficientnetb1-cifar.h5")  # TODO: How to remove global ?
 
 
 @images_router.post(

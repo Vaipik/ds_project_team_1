@@ -9,7 +9,7 @@ class APISettings(BaseSettings):
 
 class Settings(BaseSettings):
     api: APISettings
-    redis: RedisDsn
+    #redis: RedisDsn
 
     class Config:
         env_file = ".env"
