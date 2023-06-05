@@ -12,7 +12,6 @@ class APISettings(BaseSettings):
 
 class Settings(BaseSettings):
     api: APISettings
-    #redis: RedisDsn
 
     class Config:
         env_file = ".env"
@@ -21,5 +20,4 @@ class Settings(BaseSettings):
 
 
 def load_config(env_file=".env") -> Settings:
-    settings = Settings(env_file)
-    return settings
+    return Settings(env_file)
