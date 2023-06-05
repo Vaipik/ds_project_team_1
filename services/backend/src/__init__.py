@@ -7,6 +7,17 @@ from src.routers import bind_router_handlers
 
 
 def init_app(app: FastAPI) -> FastAPI:
+    """Initialize the FastAPI application.
+
+    This function binds exception handlers and router handlers to the FastAPI application.
+
+    Args:
+        app (FastAPI): The FastAPI application instance.
+
+    Returns:
+        FastAPI: The initialized FastAPI application instance.
+    """
+    
     bind_exception_handlers(app)
     bind_router_handlers(app)
     return app
