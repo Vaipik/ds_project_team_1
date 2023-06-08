@@ -6,19 +6,17 @@
     />
   </div>
 
-  <div class="container-fluid">
-    <div class="row">
+  <div class="slider">
       <image-form
           @create="imagesList"
       />
-    </div>
   </div>
+
 </template>
 
 <script>
 import ImageForm from "@/components/ImageForm.vue";
 import ImageList from "@/components/ImageList.vue";
-
 export default {
   components: {
     ImageForm, ImageList
@@ -39,12 +37,13 @@ export default {
 
 <style>
 :root {
-  --scrollcolor: #141e27;
-  --scrollbackground: #fff;
+  --scrollcolor: #FF4500FF;
+  --scrollbackground: #342121;
 }
 
 * {
   box-sizing: border-box;
+
 }
 
 html,
@@ -72,29 +71,6 @@ body {
   width: 85%;
   max-width: 1280px;
   margin: 0 auto;
-}
 
-.slider__content {
-  overflow-x: scroll;
-  -ms-scroll-snap-type: mandatory;
-      scroll-snap-type: x mandatory;
-  display: flex;
-  gap: 1rem;
-  padding-bottom: 1rem;
-  scrollbar-color: var(--scrollcolor) var(--scrollbackground);
-}
-.slider__content::-webkit-scrollbar {
-  height: 0.5rem;
-  width: 0.5rem;
-  border-radius: 1rem;
-  background: var(--scrollbackground);
-}
-.slider__content::-webkit-scrollbar-thumb {
-  border-radius: 1rem;
-  background: var(--scrollcolor);
-}
-.slider__content::-webkit-scrollbar-track {
-  border-radius: 1rem;
-  background: var(--scrollbackground);
 }
 </style>
