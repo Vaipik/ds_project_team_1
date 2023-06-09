@@ -44,4 +44,4 @@ async def predict_image(file: Annotated[UploadFile, File()]):
         raise FileIsNotImage(file.filename)
     file_content = await file.read()
     predicted_label = predict_object(model, file_content)
-    return ImageResponse(label=predicted_label)
+    return ImageResponse(label=predicted_label[0], probability=predicted_label[1])

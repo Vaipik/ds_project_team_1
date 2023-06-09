@@ -6,23 +6,23 @@ services:
     build: ./services/backend
     container_name: fastapi
     ports:
-      - "7001:7001"
+      - "6131:6131"
     volumes:
       - ./services/backend:/app
-    command: uvicorn app:app --reload --host 0.0.0.0 --port 7001
+    command: uvicorn app:app --reload --host 0.0.0.0 --port 6131
     env_file:
       - .env
     depends_on:
       - db
 
- # frontend:
- #   build: ./services/frontend
- #   container_name: vue
- #   volumes:
- #     - ./services/frontend:/app
- #     - /app/node_modules
- #   ports:
- #     - "8080:8080"
+  frontend:   
+    build: ./services/frontend
+    container_name: vue
+    volumes:
+      - ./services/frontend:/app
+      - /app/node_modules
+    ports:
+      - "7001:8080"
 
   db:
     image: postgres:15.1

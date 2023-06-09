@@ -40,6 +40,21 @@ def preprocess_image(image_content: bytes) -> Image:
     image = tf.keras.preprocessing.image.img_to_array(image)
     return np.expand_dims(image, axis=0)
 
+def softmax(x, num_class):
+    """
+    Compute the softmax activation function for a given input vector 'x'.
+
+    Parameters:
+    x (numpy.ndarray): Input vector.
+    num_class (int): Index of the class for which the softmax probability is calculated.
+
+    Returns:
+    float: Softmax probability for the specified class.
+
+    """
+    
+    accuracy = (np.exp(x - np.max(x)) / np.exp(x - np.max(x)).sum())[0][num_class]
+    return int(float(accuracy) * 100) / 100
 
 def predict_object(model, image_content: bytes) -> str:
     """Predict the object category of the given image.
@@ -57,4 +72,8 @@ def predict_object(model, image_content: bytes) -> str:
     
     processed_image = preprocess_image(image_content)
     prediction = model.predict(processed_image)
-    return ObjectCategories(np.argmax(prediction[0])).name
+    acc = softmax(prediction[0], np.argmax(prediction[0]))
+    if acc >= 0.95:
+        return (ObjectCategories(np.argmax(prediction[0])).name, acc)
+    else:
+        return (ObjectCategories(10).name, acc)
