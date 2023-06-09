@@ -5,6 +5,7 @@ from fastapi import UploadFile
 import numpy as np
 from PIL import Image
 import tensorflow as tf
+import cv2
 
 from src.schemas.images import ObjectCategories
 
@@ -36,6 +37,8 @@ def preprocess_image(image_content: bytes) -> Image:
     """
     
     image = Image.open(BytesIO(image_content))
+    if image.mode == 'RGBA':
+        image = image.convert('RGB')
     image = image.resize((32, 32))
     image = tf.keras.preprocessing.image.img_to_array(image)
     return np.expand_dims(image, axis=0)
