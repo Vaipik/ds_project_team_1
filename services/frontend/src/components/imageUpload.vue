@@ -20,6 +20,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style scoped>
@@ -63,5 +64,4 @@ export default {
 
 .custom-file-input .file-name:before {
   content: "File: ";
-}
 </style>

@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.handlers import bind_exception_handlers
 from src.config import load_config
@@ -17,7 +19,13 @@ def init_app(app: FastAPI) -> FastAPI:
     Returns:
         FastAPI: The initialized FastAPI application instance.
     """
-    
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:8080"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     bind_exception_handlers(app)
     bind_router_handlers(app)
     return app
