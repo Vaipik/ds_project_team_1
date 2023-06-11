@@ -19,6 +19,7 @@ class ObjectCategories(Enum):
     horse = 7
     ship = 8
     truck = 9
+    unknown = 10
 
 
 class ImageResponse(BaseModel):
@@ -31,6 +32,7 @@ class ImageResponse(BaseModel):
     """
     
     label: str = Field(alias="imageClass")
+    probability: str = Field(alias="probability")
 
     class Config:
         """Pydantic configuration for the ImageResponse model.

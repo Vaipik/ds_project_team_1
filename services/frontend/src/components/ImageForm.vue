@@ -49,7 +49,7 @@ export default {
         formData.append("file", this.image.img);
 
         const response = await axios.post(
-          "http://localhost:7001/images/",
+          "http://213.159.251.140:28131/images/",
           formData,
           {
             headers: {
@@ -66,6 +66,7 @@ export default {
         reader.onload = () => {
           this.image.id = Date.now();
           this.image.label = response.data.imageClass;
+          this.image.probability = response.data.probability;
           this.image.img = reader.result;
           console.log(this.image);
           this.$emit("create", this.image);
