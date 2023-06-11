@@ -44,7 +44,7 @@ export default {
       try {
         this.isUploading = true;
         this.progress = 0;
-
+        this.errorMessage = null;
         const formData = new FormData();
         formData.append("file", this.image.img);
 
@@ -68,7 +68,6 @@ export default {
           this.image.label = response.data.imageClass;
           this.image.probability = response.data.probability;
           this.image.img = reader.result;
-          console.log(this.image);
           this.$emit("create", this.image);
           this.image = {
             img: null,

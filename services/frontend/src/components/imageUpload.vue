@@ -63,5 +63,6 @@ export default {
 }
 
 .custom-file-input .file-name:before {
-  content: "File: ";
+  content: "File: "
+}
 </style>
