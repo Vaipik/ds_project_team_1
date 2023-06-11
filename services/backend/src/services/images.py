@@ -55,7 +55,7 @@ def softmax(x, num_class):
     """
 
     accuracy = (np.exp(x - np.max(x)) / np.exp(x - np.max(x)).sum())[0][num_class]
-    return int(float(accuracy) * 100) / 100
+    return int(float(accuracy) * 100)
 
 
 def predict_object(model, image_content: bytes) -> tuple[str, float]:
