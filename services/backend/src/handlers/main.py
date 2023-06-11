@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from src.application.exceptions.images import FileIsNotImage
+from src.application.exceptions.images import BaseImageException
 from src.handlers.images.exception_handlers import file_is_not_image_handler
 
 
@@ -17,5 +17,5 @@ def bind_exception_handlers(app: FastAPI) -> FastAPI:
         FastAPI: The FastAPI application instance with the exception handler registered.
     """
     
-    app.add_exception_handler(FileIsNotImage, file_is_not_image_handler)
+    app.add_exception_handler(BaseImageException, file_is_not_image_handler)
     return app

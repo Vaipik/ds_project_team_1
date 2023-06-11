@@ -26,3 +26,9 @@ class FileIsNotImage(BaseImageException):
         """
         
         return f"{self.filename} is not valid image"
+
+
+@dataclass
+class CannotRecognize(BaseImageException):
+    def message(self):
+        return "Can't recognize object"

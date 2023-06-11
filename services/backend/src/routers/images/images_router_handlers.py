@@ -2,10 +2,11 @@ from typing import Annotated
 
 from fastapi import APIRouter, UploadFile, File, status
 
-from src.application.exceptions.images import FileIsNotImage
+from src.application.exceptions.images import FileIsNotImage, CannotRecognize
+from src.config import model
+from src.application.constants import images as constants
 from src.schemas.images import ImageResponse
 from src.services.images import check_is_file_image, predict_object
-from src.config import model
 
 
 images_router = APIRouter(
@@ -43,5 +44,7 @@ async def predict_image(file: Annotated[UploadFile, File()]):
     if not file_is_image:
         raise FileIsNotImage(file.filename)
     file_content = await file.read()
-    predicted_label = predict_object(model, file_content)
-    return ImageResponse(label=predicted_label[0], probability=predicted_label[1])
+    predicted_label, probability = predict_object(model, file_content)
+    if probability < constants.MIN_PROBABILITY:
+        raise CannotRecognize
+    return ImageResponse(label=predicted_label, probability=probability)
