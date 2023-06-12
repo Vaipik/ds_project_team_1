@@ -3,7 +3,7 @@
     <form @submit.prevent="sendImage">
       <h4 v-if="errorMessage">{{ errorMessage }}</h4>
       <div class="input-container">
-        <image-upload v-model="image.img" />
+        <image-upload v-model="image.img"/>
       </div>
       <div class="progress-bar" v-if="isUploading">
         <div class="progress-fill" :style="{ width: progressPercentage }"></div>
@@ -13,7 +13,7 @@
       </div>
     </form>
   </div>
-  <button class="change-cifar" @click="toggleCifar">Change to CIFAR-{{ cifar === 10 ? '100' : '10'}}</button>
+  <button class="change-cifar" @click="toggleCifar">Change to CIFAR-{{ cifar === 10 ? 100 : 10 }}</button>
 </template>
 
 <script>
@@ -21,7 +21,7 @@ import ImageUpload from "@/components/imageUpload.vue";
 import axios from "axios";
 
 export default {
-  components: { ImageUpload },
+  components: {ImageUpload},
   data() {
     return {
       image: {
@@ -33,7 +33,7 @@ export default {
       progress: 0,
       errorMessage: null,
       cifar: 10,
-      host: `http://213.159.251.140:28131/images/cifar/${this.cifar}`
+      host: `http://213.159.251.140:28131/images/cifar/10`
     };
   },
   computed: {
@@ -51,16 +51,16 @@ export default {
         formData.append("file", this.image.img);
 
         const response = await axios.post(
-          `${this.host}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            onUploadProgress: (progressEvent) => {
-              this.progress = progressEvent.loaded / progressEvent.total;
-            },
-          }
+            `${this.host}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              onUploadProgress: (progressEvent) => {
+                this.progress = progressEvent.loaded / progressEvent.total;
+              },
+            }
         );
 
         const reader = new FileReader();
