@@ -1,25 +1,4 @@
-from enum import Enum
-
 from pydantic import BaseModel, Field
-
-
-class ObjectCategories(Enum):
-    """Enumeration of object categories.
-
-    Each category represents a specific object class and has a corresponding numeric value.
-    """
-    
-    airplane = 0
-    automobile = 1
-    bird = 2
-    cat = 3
-    deer = 4
-    dog = 5
-    frog = 6
-    horse = 7
-    ship = 8
-    truck = 9
-    unknown = 10
 
 
 class ImageResponse(BaseModel):
