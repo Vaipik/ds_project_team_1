@@ -1,8 +1,7 @@
 <template>
   <div class="modal-card">
     <form @submit.prevent="sendImage">
-      <h4 v-if="errorMessage">{{ errorMessage }}
-      </h4>
+      <h4 v-if="errorMessage">{{ errorMessage }}</h4>
       <div class="input-container">
         <image-upload v-model="image.img" />
       </div>
@@ -14,6 +13,7 @@
       </div>
     </form>
   </div>
+  <button class="change-cifar" @click="toggleCifar">Change to CIFAR-{{ cifar === 10 ? '100' : '10'}}</button>
 </template>
 
 <script>
@@ -32,6 +32,8 @@ export default {
       isUploading: false,
       progress: 0,
       errorMessage: null,
+      cifar: 10,
+      host: `http://213.159.251.140:28131/images/cifar/${this.cifar}`
     };
   },
   computed: {
@@ -49,7 +51,7 @@ export default {
         formData.append("file", this.image.img);
 
         const response = await axios.post(
-          "http://213.159.251.140:28131/images/",
+          `${this.host}`,
           formData,
           {
             headers: {
@@ -78,7 +80,6 @@ export default {
           this.progress = 0;
         };
 
-        console.log("After all", this.image);
       } catch (e) {
         console.log(e);
         this.errorMessage = e.response.data.message
@@ -86,6 +87,11 @@ export default {
         this.progress = 0;
       }
     },
+    toggleCifar() {
+      this.cifar = this.cifar === 10 ? 100 : 10;
+      this.host = `http://213.159.251.140:28131/images/${this.cifar}`;
+      this.$emit("update", this.cifar)
+    }
   },
 };
 </script>
@@ -137,7 +143,6 @@ export default {
   padding: 12px 24px;
   background-color: transparent;
   color: #fff;
-  //border: 1px solid orangered;
   border: none;
   border-radius: 10px;
   font-size: 16px;
@@ -168,15 +173,33 @@ export default {
   transition: width 0.3s ease-in-out;
 }
 
+.change-cifar {
+  width: 30%; /* Adjust the width as desired */
+  margin: 10px auto;
+  padding: 10px;
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid orangered;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: normal;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block; /* Add this line */
+  text-align: center; /* Add this line */
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
-  .modal-card {
+  .modal-card .change-cifar {
     width: 80%;
   }
 }
 
 @media (max-width: 480px) {
-  .modal-card {
+  .modal-card .change-cifar {
     width: 90%;
   }
 }
