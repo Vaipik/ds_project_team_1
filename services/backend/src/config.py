@@ -1,8 +1,10 @@
-from pydantic import BaseSettings, RedisDsn
+from pydantic import BaseSettings
 import tensorflow as tf
 
 
-model = tf.keras.models.load_model("/app/model/efficientnetb1-cifar.h5")
+model_c10 = tf.keras.models.load_model("/app/model/efficientnetb1-cifar.h5")
+model_c100 = tf.keras.models.load_model("/app/model/efficientnetV2B1-cifar100.h5")
+
 
 class APISettings(BaseSettings):
     version: str
