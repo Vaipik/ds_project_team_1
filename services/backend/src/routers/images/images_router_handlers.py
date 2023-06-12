@@ -26,7 +26,7 @@ images_router = APIRouter(
     },
     response_model=ImageResponse,
 )
-async def predict_image(cifar: int, file: Annotated[UploadFile, File()]):
+async def predict_image(cifar: int | str, file: Annotated[UploadFile, File()]):
     """Predict the label of an uploaded image.
 
     This endpoint accepts a file upload and predicts the label of the image using a pre-trained model.
@@ -48,6 +48,7 @@ async def predict_image(cifar: int, file: Annotated[UploadFile, File()]):
     if not file_is_image:
         raise FileIsNotImage(file.filename)
     file_content = await file.read()
+    cifar = int(cifar)
     labels = CIFAR_LABELS.get(f"CIFAR-{cifar}")
     model = model_c10 if cifar == 10 else model_c100
     predicted_label, probability = predict_object(model, file_content, labels)
