@@ -4,8 +4,6 @@ import numpy as np
 from PIL import Image
 import tensorflow as tf
 
-from src.schemas.images import ObjectCategories
-
 
 def check_is_file_image(content_type: str) -> bool:
     """Check if the given content type indicates an image.
@@ -58,7 +56,7 @@ def softmax(x, num_class):
     return int(float(accuracy) * 100)
 
 
-def predict_object(model, image_content: bytes) -> tuple[str, float]:
+def predict_object(model, image_content: bytes, image_labels: list[str]) -> tuple[str, float]:
     """Predict the object category of the given image.
 
     This function preprocesses the image content, feeds it to the provided model for prediction,
@@ -67,6 +65,7 @@ def predict_object(model, image_content: bytes) -> tuple[str, float]:
     Args:
         model (Any): The model used for prediction.
         image_content (bytes): The content of the image.
+        image_labels (list[str]): image labels for given dataset
 
     Returns:
         str: The predicted object category.
@@ -75,7 +74,4 @@ def predict_object(model, image_content: bytes) -> tuple[str, float]:
     processed_image = preprocess_image(image_content)
     prediction = model.predict(processed_image)
     acc = softmax(prediction[0], np.argmax(prediction[0]))
-    if acc >= 0.95:
-        return ObjectCategories(np.argmax(prediction[0])).name, acc
-    else:
-        return ObjectCategories(10).name, acc
+    return image_labels[np.argmax(prediction[0])], acc
