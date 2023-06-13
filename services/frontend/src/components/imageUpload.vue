@@ -1,8 +1,8 @@
 <template>
   <label class="custom-file-input">
-    <input type="file" @change="onChange($event)">
+    <input type="file" @change="onChange($event)" ref="fileInput">
     <div class="file-info">
-      <span class="file-name" ref="fileName">Choose File</span>
+      <span class="file-name">{{ fileName }}</span>
     </div>
   </label>
 </template>
@@ -10,18 +10,22 @@
 <script>
 export default {
   props: ['modelValue'],
+  computed: {
+    fileName() {
+      const file = this.modelValue;
+      return file ? file.name : 'Choose File';
+    },
+  },
   methods: {
     onChange(event) {
       const file = event.target.files[0];
-      const fileName = file ? file.name : '';
-
       this.$emit('update:modelValue', file);
-      this.$refs.fileName.textContent = fileName;
+      this.$refs.fileInput.value = '';
     },
   },
 };
-
 </script>
+
 
 <style scoped>
 .custom-file-input {

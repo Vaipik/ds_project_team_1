@@ -3,7 +3,7 @@
     <form @submit.prevent="sendImage">
       <h4 v-if="errorMessage">{{ errorMessage }}</h4>
       <div class="input-container">
-        <image-upload v-model="image.img"/>
+        <image-upload v-model="image.img" @update:modelValue="handleFileChange" ref="imageUpload"></image-upload>
       </div>
       <div class="progress-bar" v-if="isUploading">
         <div class="progress-fill" :style="{ width: progressPercentage }"></div>
@@ -42,49 +42,58 @@ export default {
     },
   },
   methods: {
+    handleFileChange(file) {
+      this.image.img = file;
+      this.errorMessage = null;
+    },
     async sendImage() {
-      try {
-        this.isUploading = true;
-        this.progress = 0;
-        this.errorMessage = null;
-        const formData = new FormData();
-        formData.append("file", this.image.img);
+      if (this.image.img) {
+        try {
+          this.isUploading = true;
+          this.progress = 0;
+          this.errorMessage = null;
+          const formData = new FormData();
+          formData.append("file", this.image.img);
 
-        const response = await axios.post(
-            `${this.host}`,
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-              onUploadProgress: (progressEvent) => {
-                this.progress = progressEvent.loaded / progressEvent.total;
-              },
-            }
-        );
+          const response = await axios.post(
+              `${this.host}`,
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+                onUploadProgress: (progressEvent) => {
+                  this.progress = progressEvent.loaded / progressEvent.total;
+                },
+              }
+          );
 
-        const reader = new FileReader();
-        reader.readAsDataURL(this.image.img);
-        reader.onload = () => {
-          this.image.id = Date.now();
-          this.image.label = response.data.imageClass;
-          this.image.probability = response.data.probability;
-          this.image.img = reader.result;
-          this.$emit("create", this.image);
-          this.image = {
-            img: null,
-            label: null,
-            probability: null,
+          const reader = new FileReader();
+          reader.readAsDataURL(this.image.img);
+          reader.onload = () => {
+            this.image.id = Date.now();
+            this.image.label = response.data.imageClass;
+            this.image.probability = response.data.probability;
+            this.image.img = reader.result;
+            this.$emit("create", this.image);
+            this.image = {
+              img: null,
+              label: null,
+              probability: null,
+            };
+            this.$refs.imageUpload.fileName = null;
+            this.isUploading = false;
+            this.progress = 0;
           };
+
+        } catch (e) {
+          console.log(e);
+          this.errorMessage = e.response.data.message
           this.isUploading = false;
           this.progress = 0;
-        };
-
-      } catch (e) {
-        console.log(e);
-        this.errorMessage = e.response.data.message
-        this.isUploading = false;
-        this.progress = 0;
+        }
+      } else {
+        this.errorMessage = "You need to choose a file!"
       }
     },
     toggleCifar() {
