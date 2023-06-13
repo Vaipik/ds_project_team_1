@@ -98,7 +98,7 @@ export default {
     },
     toggleCifar() {
       this.cifar = this.cifar === 10 ? 100 : 10;
-      this.host = `http://213.159.251.140:28131/images/${this.cifar}`;
+      this.host = `http://213.159.251.140:28131/images/cifar/${this.cifar}`;
       this.$emit("update", this.cifar)
     }
   },
