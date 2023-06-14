@@ -12,6 +12,11 @@ ___
 The task is to create and train a convolutional neural network capable of classifying an image given to it into one of
 the 10 classes proposed in the `CIFAR-10` dataset.
 ___
+## General Info
+The application performs the functions object recognition on an image using a neural network model trained on the training set of the:
+ - `CIFAR 10` dataset with 10 image classes.
+ - `CIFAR 100` dataset with 100 image classes.
+___
 ## Features
 
 - Accepts image uploads and predicts the object category.
@@ -24,7 +29,7 @@ ___
 
 The application uses a pre-trained on `ImageNet` `EfficientNetV2B1` network with subsequent fine-tuning of the weights.
 This network architecture was proposed in a paper [EfficientNetV2: Smaller Models and Faster Training](https://arxiv.org/abs/2104.00298).
-`EfficientNetV2B1` is a good fit for `CIFAR-10` as it combines good performance with a reasonable size of the network. 
+`EfficientNetV2B1` is a good fit for `CIFAR-10` and `CIFAR 100` as it combines good performance with a reasonable size of the network. 
 As a result, we get a high accuracy score, no overfitting to the training data, and a small size of the final model.
 
 To compensate for a smaller network size and achieve higher accuracy rates we used multitask learning. In particular, we added
